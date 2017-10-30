@@ -1,6 +1,6 @@
 public with sharing class CL_TestViewController {
 
-    List<Test__c> records { get; set; }
+    public List<Test__c> records { get; set; }
 
     public CL_TestViewController() {
 
