@@ -1,0 +1,18 @@
+{
+    "records": [
+        {
+            "attributes": {
+                "type": "Test__c",
+                "referenceId": "Test__cRef1"
+            },
+            "Name": "テスト１"
+        },
+        {
+            "attributes": {
+                "type": "Test__c",
+                "referenceId": "Test__cRef2"
+            },
+            "Name": "テスト２"
+        }
+    ]
+}

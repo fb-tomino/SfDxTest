@@ -1,0 +1,12 @@
+{
+    "records": [
+        {
+            "attributes": {
+                "type": "TestChild__c",
+                "referenceId": "TestChild__cRef1"
+            },
+            "Name": "テスト子１",
+            "RefTest__c": "@Test__cRef1"
+        }
+    ]
+}
