@@ -16,5 +16,11 @@
         <apex:outputText value="{!record.Name}"/>
     </apex:column>
 
+    <apex:column>
+      <apex:facet name="header">ChildName</apex:facet>
+      <apex:facet name="footer">column footer</apex:facet>
+      <apex:outputText value="{!record.TestChild__r[0].Name}"/>
+  </apex:column>
+
   </apex:dataTable>
 </apex:page>
