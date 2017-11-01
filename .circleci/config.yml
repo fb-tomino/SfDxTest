@@ -27,14 +27,13 @@ jobs:
               exit 1
             fi
 
+            export JID=`grep jobid out.log | head -1 | tr -d ' ' | cut -d ':' -f 2`
+            export CRS=
+
             echo '-----------------------------------'
             cat out.log
             echo $JID
             echo '-----------------------------------'
-
-
-            export JID=`grep jobid out.log | tr -d ' ' | cut -d ':' -f 2`
-            export CRS=
 
             while [ -z $CRS ]
             do
