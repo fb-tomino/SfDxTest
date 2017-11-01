@@ -31,6 +31,7 @@ jobs:
               cat out.log
               exit 1
             fi
+            echo --Run Verify
 
             jid=`grep jobid out.log | head -1 | tr -d ' ' | cut -d ':' -f 2`
             crs=
@@ -39,6 +40,7 @@ jobs:
             do
               sfdx force:mdapi:deploy -u Sandbox -i ${jid} -w 1 > out.log
               crs=`grep finished out.log`
+              echo --Run Status Check
             done
             crs=`grep Status: out.log | tail -1 | tr -d ' ' | cut -d ':' -f 2`
             if [ ${crs} = "Failed" ]; then
