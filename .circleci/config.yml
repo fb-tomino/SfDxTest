@@ -25,11 +25,13 @@ jobs:
             export DRS=`grep Status deploy.out | tr -d ' ' | cut -d ':' -f 2`
             if [ $DRS == "Failed" ]; then
               exit 1
-            else
-              export JID=`grep jobid deploy.out | tr -d ' ' | cut -d ':' -f 2`
             fi
 
+            export JID=`grep jobid deploy.out | tr -d ' ' | cut -d ':' -f 2`
             export CRS=
+
+            echo $JID
+
             while [ -z $CRS ]
             do
               sfdx force:mdapi:deploy:report -u Sandbox -i $JID -w 1 > check.out
