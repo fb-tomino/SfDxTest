@@ -23,12 +23,14 @@ jobs:
           command: |
             sfdx force:mdapi:deploy -c -d src -u Sandbox > out.log
             drs=`grep Status out.log | tr -d ' ' | cut -d ':' -f 2`
+            echo ----------------------${drs}
             if [ ${drs} = "Failed" ]; then
               exit 1
             fi
 
             jid=`grep jobid out.log | head -1 | tr -d ' ' | cut -d ':' -f 2`
             crs=''
+            echo ----------------------${crs}
 
             while [ -z ${crs} ]
             do
