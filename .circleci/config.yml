@@ -11,14 +11,38 @@ jobs:
       - checkout
 
       - run:
-          name: Connect Sandbox
-          command: sfdx force:auth:jwt:grant -i 3MVG9d8..z.hDcPLpmFuO54S6afwMRd7PN26g3hMfPUZiRYPEFyl4o00T4isazN5SrKuEqcC7JG1UveXd2eOS -f .deploy/server.key -u yoshinobu.tomino@gmail.com -s -a Sandbox
+        name: Connect Sandbox
+        command: sfdx force:auth:jwt:grant -i 3MVG9d8..z.hDcPLpmFuO54S6afwMRd7PN26g3hMfPUZiRYPEFyl4o00T4isazN5SrKuEqcC7JG1UveXd2eOS -f .deploy/server.key -u yoshinobu.tomino@gmail.com -s -a Sandbox
 
       - run:
-          name: Change to metadataAPI
-          command: sfdx force:source:convert -d src
+        name: Change to metadataAPI
+        command: sfdx force:source:convert -d src
 
       - run:
-          name: Deploy Check
-          command: sfdx force:mdapi:deploy -c -d src -u Sandbox
+        name: Deploy Verify
+        command: |
+          sfdx force:mdapi:deploy -c -d src -u Sandbox > deploy.out
+          export DRS=`grep Status deploy.out | tr -d ' ' | cut -d ':' -f 2`
+          if [ $DRS == "Failed" ]; then
+            exit 1
+          else
+            export JID=`grep jobid deploy.out | tr -d ' ' | cut -d ':' -f 2`
+          fi
 
+          export CRS=
+          while [ -z $CRS ]
+          do
+            sfdx force:mdapi:deploy:report -u Sandbox -i $JID -w 1 > check.out
+            export CRS=`grep finished check.out`
+          done
+          export CRS=`grep Status check.out | tail -1 | tr -d ' ' | cut -d ':' -f 2`
+          if [ $CRS = "Failed" ]; then
+            exit 1
+          else
+            echo 'Verify OK'
+          fi
+
+      - run:
+        name: Deploy
+        Command: |
+          echo 'deploy'
