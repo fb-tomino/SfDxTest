@@ -4,6 +4,10 @@ jobs:
     docker:
       - image: dancinllama/dockerdx
 
+    branches:
+      only:
+        - master
+
     environment:
       - SFDX_AUTOUPDATE_DISABLE: true
 
