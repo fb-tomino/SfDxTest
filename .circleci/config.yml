@@ -4,19 +4,18 @@ jobs:
     docker:
       - image: dancinllama/dockerdx
 
-    environment:
-      - URL=https://developer.salesforce.com/media/salesforce-cli/sfdx-linux-amd64.tar.xz
-
     steps:
       - checkout
 
       - run:
-          name: Get Sfdx
-          command: |
-            sfdx update
-            sfdx --version
-            sfdx plugins --core
+          name: Connect Sandbox
+          command: sfdx force:auth:jwt:grant -i 3MVG9d8..z.hDcPLpmFuO54S6afwMRd7PN26g3hMfPUZiRYPEFyl4o00T4isazN5SrKuEqcC7JG1UveXd2eOS -f deploy/server.key -u yoshinobu.tomino@gmail.com -s -a Sandbox
 
       - run:
-          name: Print the Current Time
-          command: date
+          name: Change to metadataAPI
+          command: sfdx force:source:convert -d src
+
+      - run:
+          name: Deploy Check
+          command: sfdx force:mdapi:deploy -c -d src -u Sandox
+
