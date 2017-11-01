@@ -22,21 +22,21 @@ jobs:
           name: Deploy Verify
           command: |
             sfdx force:mdapi:deploy -c -d src -u Sandbox > out.log
-            export DRS=`grep Status out.log | tr -d ' ' | cut -d ':' -f 2`
-            if [ $DRS == "Failed" ]; then
+            drs=`grep Status out.log | tr -d ' ' | cut -d ':' -f 2`
+            if [ ${drs} == "Failed" ]; then
               exit 1
             fi
 
-            export JID=`grep jobid out.log | head -1 | tr -d ' ' | cut -d ':' -f 2`
-            export CRS=
+            jid=`grep jobid out.log | head -1 | tr -d ' ' | cut -d ':' -f 2`
+            crs=
 
-            while [ -z $CRS ]
+            while [ -z ${crs} ]
             do
-              sfdx force:mdapi:deploy -u Sandbox -i $JID -w 1 > out.log
-              export CRS=`grep finished out.log`
+              sfdx force:mdapi:deploy -u Sandbox -i ${jid} -w 1 > out.log
+              crs=`grep finished out.log`
             done
-            export CRS=`grep Status out.log | tail -1 | tr -d ' ' | cut -d ':' -f 2`
-            if [ $CRS = "Failed" ]; then
+            crs=`grep Status out.log | tail -1 | tr -d ' ' | cut -d ':' -f 2`
+            if [ ${crs} = "Failed" ]; then
               exit 1
             else
               echo 'Verify OK'
