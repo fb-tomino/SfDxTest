@@ -2,7 +2,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: debian:stretch
+      - image: dancinllama/dockerdx
 
     environment:
       - URL=https://developer.salesforce.com/media/salesforce-cli/sfdx-linux-amd64.tar.xz
@@ -13,9 +13,6 @@ jobs:
       - run:
           name: Get Sfdx
           command: |
-            wget -qO- $URL | tar xJf -
-            cd ./sfdx/install
-            export PATH=$PATH:./sfdx/$(pwd)
             sfdx update
             sfdx --version
             sfdx plugins --core
