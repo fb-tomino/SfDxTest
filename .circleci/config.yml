@@ -20,5 +20,5 @@ jobs:
 
       - run:
           name: Deploy Check
-          command: sfdx force:mdapi:deploy -c -d src -u Sandox
+          command: sfdx force:mdapi:deploy -c -d src -u Sandbox
 
