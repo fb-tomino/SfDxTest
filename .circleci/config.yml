@@ -25,7 +25,7 @@ jobs:
       - run:
           name: Deploy Verify
           command: |
-            sfdx force:mdapi:deploy -c -l RunAllTestsInOrg -d src -u Sandbox > out.log
+            sfdx force:mdapi:deploy -c -l RunAllTestsInOrg -d src -u Sandbox > out.log 2>&1
             drs=`grep Status: out.log | tr -d ' ' | cut -d ':' -f 2`
             if [ ${drs} = "Failed" ]; then
               cat out.log
@@ -38,7 +38,7 @@ jobs:
 
             while [ -z "${crs}" ]
             do
-              sfdx force:mdapi:deploy -u Sandbox -i ${jid} -w 1 > out.log
+              sfdx force:mdapi:deploy -u Sandbox -i ${jid} -w 1 > out.log 2>&1
               crs=`grep finished out.log`
               echo --Run Status Check
             done
@@ -53,7 +53,7 @@ jobs:
       - run:
           name: Deploy
           Command: |
-            sfdx force:mdapi:deploy -d src -u Sandbox > out.log
+            sfdx force:mdapi:deploy -d src -u Sandbox > out.log 2>&1
             drs=`grep Status: out.log | tr -d ' ' | cut -d ':' -f 2`
             if [ ${drs} = "Failed" ]; then
               cat out.log
@@ -65,7 +65,7 @@ jobs:
 
             while [ -z "${crs}" ]
             do
-              sfdx force:mdapi:deploy -u Sandbox -i ${jid} -w 1 > out.log
+              sfdx force:mdapi:deploy -u Sandbox -i ${jid} -w 1 > out.log 2>&1
               crs=`grep finished out.log`
             done
             crs=`grep Status: out.log | tail -1 | tr -d ' ' | cut -d ':' -f 2`
