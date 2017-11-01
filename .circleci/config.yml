@@ -9,19 +9,13 @@ jobs:
 
       - run:
           name: Connect Sandbox
-          command: |
-            cd /root/project
-            sfdx force:auth:jwt:grant -i 3MVG9d8..z.hDcPLpmFuO54S6afwMRd7PN26g3hMfPUZiRYPEFyl4o00T4isazN5SrKuEqcC7JG1UveXd2eOS -f deploy/server.key -u yoshinobu.tomino@gmail.com -s -a Sandbox
+          command: sfdx force:auth:jwt:grant -i 3MVG9d8..z.hDcPLpmFuO54S6afwMRd7PN26g3hMfPUZiRYPEFyl4o00T4isazN5SrKuEqcC7JG1UveXd2eOS -f .deploy/server.key -u yoshinobu.tomino@gmail.com -s -a Sandbox
 
       - run:
           name: Change to metadataAPI
-          command: |
-            cd /root/project
-            sfdx force:source:convert -d src
+          command: sfdx force:source:convert -d src
 
       - run:
           name: Deploy Check
-          command: |
-            cd /root/project
-            sfdx force:mdapi:deploy -c -d src -u Sandox
+          command: sfdx force:mdapi:deploy -c -d src -u Sandox
 
