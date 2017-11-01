@@ -27,6 +27,8 @@ jobs:
               exit 1
             fi
 
+            cat deploy.out
+
             export JID=`grep jobid deploy.out | tr -d ' ' | cut -d ':' -f 2`
             export CRS=
 
