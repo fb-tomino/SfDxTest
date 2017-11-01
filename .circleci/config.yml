@@ -3,11 +3,23 @@ jobs:
   build:
     docker:
       - image: debian:stretch
+
+    environment:
+      - URL=https://developer.salesforce.com/media/salesforce-cli/sfdx-linux-amd64.tar.xz
+
     steps:
       - checkout
+
       - run:
-          name: Greeting
-          command: echo Hello, world.
+          name: Get Sfdx
+          command: |
+            wget -qO- $URL | tar xJf -
+            cd ./sfdx/install
+            export PATH=$PATH:./sfdx/$(pwd)
+            sfdx update
+            sfdx --version
+            sfdx plugins --core
+
       - run:
           name: Print the Current Time
           command: date
