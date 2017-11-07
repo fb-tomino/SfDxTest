@@ -25,7 +25,7 @@ jobs:
       - run:
           name: Deploy Verify
           command: |
-            sfdx force:mdapi:deploy -c -l RunAllTestsInOrg -d src -u Sandbox | tee out.log
+            sfdx force:mdapi:deploy -c -l RunLocalTests -d src -u Sandbox | tee out.log
             drs=`grep Status: out.log | tr -d ' ' | cut -d ':' -f 2`
             if [ ${drs} = "Failed" ]; then
               cat out.log
