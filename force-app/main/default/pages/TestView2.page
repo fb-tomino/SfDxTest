@@ -1,0 +1,53 @@
+<apex:page controller="CL_TestViewController2" action="{!init}">
+  <apex:outputPanel id="panel">
+    <apex:dataTable value="{!records}" var="record" id="tb" rowClasses="odd,even" styleClass="list" headerClass="headerRow">
+      <apex:facet name="caption">table caption</apex:facet>
+      <apex:facet name="header">table header</apex:facet>
+      <apex:facet name="footer">table footer</apex:facet>
+
+      <apex:column footerClass="footer" styleClass="dataRow">
+        <apex:facet name="header">ID</apex:facet>
+        <apex:facet name="footer">column footer</apex:facet>
+        <apex:outputText value="{!record.Id}"/>
+      </apex:column>
+
+      <apex:column footerClass="footer" styleClass="dataRow">
+          <apex:facet name="header">Name</apex:facet>
+          <apex:facet name="footer">column footer</apex:facet>
+          <apex:outputText value="{!record.Name}" escape="false"/>
+      </apex:column>
+
+      <apex:column footerClass="footer" styleClass="dataRow">
+        <apex:facet name="header">ChildName</apex:facet>
+        <apex:facet name="footer">column footer</apex:facet>
+        <apex:outputText value="{!record.TestChild__r[0].Name}" escape="false"/>
+      </apex:column>
+    </apex:dataTable>
+
+    <br/>
+    直前の登録データ<br/>
+    テスト名：<apex:outputText value="{!name}" escape="false"/><br/>
+    テスト子名：<apex:outputText value="{!childName}" escape="false"/><br/>
+  </apex:outputPanel>
+  <br/>
+  <apex:form>
+    <apex:actionRegion>
+      テスト名：<input type="text" id="name" value=""/><br/>
+      テスト子名：<input type="text" id="childName" value=""/><br/>
+      <input type="button" value="登録" onclick="doRegisterFunc();"/>
+      <apex:actionFunction name="doRegister" action="{!doRegister}" reRender="panel">
+        <apex:param name="name" value=""/>
+        <apex:param name="childName" value=""/>
+      </apex:actionFunction>
+    </apex:actionRegion>
+  </apex:form>
+
+  <script>
+    function doRegisterFunc() {
+      const name = document.getElementById('name').value;
+      const childName = document.getElementById('childName').value;
+      console.info(name + ' ' + childName);
+      doRegister(name, childName);
+    }
+  </script>
+</apex:page>
