@@ -2,14 +2,14 @@ public with sharing class CL_TestViewController {
 
   public List<Test__c> records { get; set {
       escape(value);
-      // for (Test__c r : value) {
-      //   escape(r.TestChild__r);
-      // }
+      for (Test__c r : value) {
+        escape(r.TestChild__r);
+      }
       records = value;
     }
   }
   public String name { get; set { name = value.escapeHtml4(); } }
-  public String childName { get; set; }
+  public String childName { get; set { childName = value.escapeHtml4(); } }
 
   public CL_TestViewController() {
 
@@ -18,7 +18,7 @@ public with sharing class CL_TestViewController {
   public void init() {
     name = '無';
     childName = '無';
-    records = [ SELECT Id,Name,(SELECT Id,Name FROM TestChild__r) FROM Test__c ];
+    records = [ SELECT Id,Name,(SELECT Id,Name FROM TestChild__r) FROM Test__c LIMIT 1000 ];
   }
 
   public void doRegister() {
@@ -36,7 +36,7 @@ public with sharing class CL_TestViewController {
     );
     insert children;
 
-    records = [ SELECT Id,Name,(SELECT Id,Name FROM TestChild__r) FROM Test__c ];
+    records = [ SELECT Id,Name,(SELECT Id,Name FROM TestChild__r) FROM Test__c LIMIT 1000 ];
     this.name = name;
     this.childName = childName;
   }
