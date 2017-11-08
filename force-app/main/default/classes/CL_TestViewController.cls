@@ -1,15 +1,15 @@
 public with sharing class CL_TestViewController {
 
-  public List<Test__c> records { get; set {
-      escape(value);
-      for (Test__c r : value) {
-        escape(r.TestChild__r);
-      }
-      records = value;
+  public List<TestChild__c> records {
+    get {
+      List<TestChild__c> tmp = records.deepClone(true, true, true);
+      escape(tmp);
+      return tmp;
     }
+    set;
   }
-  public String name { get; set { name = value.escapeHtml4(); } }
-  public String childName { get; set { childName = value.escapeHtml4(); } }
+  public String name { get { return name.escapeHtml4(); } set; }
+  public String childName { get { return childName.escapeHtml4(); } set; }
 
   public CL_TestViewController() {
 
@@ -18,7 +18,7 @@ public with sharing class CL_TestViewController {
   public void init() {
     name = '無';
     childName = '無';
-    records = [ SELECT Id,Name,(SELECT Id,Name FROM TestChild__r) FROM Test__c LIMIT 1000 ];
+    records = [ SELECT Id,Name,RefTest__r.Name FROM TestChild__c LIMIT 1000 ];
   }
 
   public void doRegister() {
@@ -36,7 +36,7 @@ public with sharing class CL_TestViewController {
     );
     insert children;
 
-    records = [ SELECT Id,Name,(SELECT Id,Name FROM TestChild__r) FROM Test__c LIMIT 1000 ];
+    records = [ SELECT Id,Name,RefTest__r.Name FROM TestChild__c LIMIT 1000 ];
     this.name = name;
     this.childName = childName;
   }
@@ -44,11 +44,26 @@ public with sharing class CL_TestViewController {
   public void escape(List<SObject> lst) {
     if (lst != null && lst.size() > 0) {
       for (SObject obj : lst) {
-        Map<String, Schema.SObjectField> fieldMap = obj.getSObjectType().getDescribe().fields.getMap();
-        for (Schema.SObjectField f : fieldMap.values()) {
-          Schema.DescribeFieldResult dfr = f.getDescribe();
-          if (dfr.soaptype == Schema.SoapType.String) {
-            obj.put(dfr.name , ((String)obj.get(dfr.name)).escapeHtml4());
+        escapeSObject(obj);
+      }
+    }
+  }
+
+  private void escapeSObject(SObject obj) {
+    Map<String, Schema.SObjectField> fieldMap = obj.getSObjectType().getDescribe().fields.getMap();
+    for (Schema.SObjectField f : fieldMap.values()) {
+      Schema.DescribeFieldResult dfr = f.getDescribe();
+      if (dfr.soaptype == Schema.SoapType.String) {
+        obj.put(dfr.name , ((String)obj.get(dfr.name)).escapeHtml4());
+      } else if (dfr.soaptype == Schema.SoapType.ID) {
+        for (Schema.SObjectType t : dfr.getReferenceTo()) {
+          if (dfr.getRelationshipName().contains('__r')) {
+            SObject ro = obj.getSObject(dfr.getRelationshipName());
+            System.debug(dfr.getRelationshipName());
+            if (ro != null) {
+              escapeSObject(ro);
+              obj.putSObject(dfr.getRelationshipName(), ro);
+            }
           }
         }
       }

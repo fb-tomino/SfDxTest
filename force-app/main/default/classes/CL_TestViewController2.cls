@@ -2,7 +2,7 @@ public with sharing class CL_TestViewController2 {
 
   public List<Test__c> records {
     get {
-      List<Test__c> escaped = records;
+      List<Test__c> escaped = records.deepClone(true, true, true);
       escape(escaped);
       for (Test__c r : escaped) {
         escape(r.TestChild__r);

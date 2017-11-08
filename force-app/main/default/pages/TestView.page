@@ -14,13 +14,13 @@
       <apex:column footerClass="footer" styleClass="dataRow">
           <apex:facet name="header">Name</apex:facet>
           <apex:facet name="footer">column footer</apex:facet>
-          <apex:outputText value="{!record.Name}" escape="false"/>
+          <apex:outputText value="{!record.RefTest__r.Name}" escape="false"/>
       </apex:column>
 
       <apex:column footerClass="footer" styleClass="dataRow">
         <apex:facet name="header">ChildName</apex:facet>
         <apex:facet name="footer">column footer</apex:facet>
-        <apex:outputText value="{!record.TestChild__r[0].Name}" escape="false"/>
+        <apex:outputText value="{!record.Name}" escape="false"/>
       </apex:column>
     </apex:dataTable>
 
