@@ -2,6 +2,12 @@
 public with sharing class CL_TestViewControllerTest {
 
   public static testMethod void test01() {
+
+    Test__c p = new Test__c(Name = 'p');
+    insert p;
+    TestChild__c c = new TestChild__c(Name = 'c', RefTest__c = p.Id);
+    insert c;
+
     CL_TestViewController tgt =  new CL_TestViewController();
 
     Pagereference page = new PageReference('/apex/TestView');
@@ -12,7 +18,7 @@ public with sharing class CL_TestViewControllerTest {
     tgt.init();
     tgt.doRegister();
 
-    System.assert(true);
+    System.assert(true, tgt.records);
     // System.assert(false, '強制失敗');
   }
 }
