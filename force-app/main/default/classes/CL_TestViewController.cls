@@ -20,7 +20,7 @@ public with sharing class CL_TestViewController {
     this.jump = Apexpages.currentPage().getParameters().get('q');
     name = '無';
     childName = '無';
-    records = [ SELECT Id,Name,RefTest__r.Name FROM TestChild__c WHERE RefTest__c != null ];
+    records = [ SELECT Id,Name,RefTest__r.Name FROM TestChild__c LIMIT 50000 ];
   }
 
   public void doRegister() {
@@ -38,7 +38,7 @@ public with sharing class CL_TestViewController {
     );
     insert children;
 
-    records = [ SELECT Id,Name,RefTest__r.Name FROM TestChild__c WHERE RefTest__c != null ];
+    records = [ SELECT Id,Name,RefTest__r.Name FROM TestChild__c LIMIT 50000 ];
     doDebug(JSON.serialize(records));
 
     this.name = name;

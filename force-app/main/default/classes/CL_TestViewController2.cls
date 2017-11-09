@@ -16,7 +16,7 @@ public without sharing class CL_TestViewController2 {
     this.jump = Apexpages.currentPage().getParameters().get('q');
     name = '無';
     childName = '無';
-    records = [ SELECT Id,Name,RefTest__r.Name FROM TestChild__c WHERE RefTest__c != null ];
+    records = [ SELECT Id,Name,RefTest__r.Name FROM TestChild__c ];
   }
 
   public void doRegister() {
@@ -34,7 +34,7 @@ public without sharing class CL_TestViewController2 {
     );
     insert children;
 
-    records = [ SELECT Id,Name,RefTest__r.Name FROM TestChild__c WHERE RefTest__c != null ];
+    records = [ SELECT Id,Name,RefTest__r.Name FROM TestChild__c ];
     for (TestChild__c t : records) {
       doDebug(t.Id);
     }
