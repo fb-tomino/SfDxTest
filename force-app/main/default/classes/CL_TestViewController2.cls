@@ -50,6 +50,7 @@ public without sharing class CL_TestViewController2 {
     return next;
   }
 
+  @TestVisible
   private void escape(List<SObject> lst) {
     if (lst != null && lst.size() > 0) {
       for (SObject obj : lst) {
