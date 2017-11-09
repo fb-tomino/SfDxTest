@@ -10,6 +10,7 @@ public with sharing class CL_TestViewController {
   }
   public String name { get { return name.escapeHtml4(); } set; }
   public String childName { get { return childName.escapeHtml4(); } set; }
+  public String jump { get; set; }
 
   public CL_TestViewController() {
 
@@ -42,7 +43,17 @@ public with sharing class CL_TestViewController {
     doDebug(JSON.serialize(records));
   }
 
-  public void escape(List<SObject> lst) {
+  public void doSetJump() {
+    this.jump = Apexpages.currentPage().getParameters().get('jump');
+  }
+
+  public Pagereference doJump() {
+    Pagereference next = new Pagereference(this.jump);
+    next.setRedirect(true);
+    return next;
+  }
+
+  private void escape(List<SObject> lst) {
     if (lst != null && lst.size() > 0) {
       for (SObject obj : lst) {
         escapeSObject(obj);
