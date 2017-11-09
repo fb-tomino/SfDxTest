@@ -4,9 +4,9 @@ public with sharing class CL_TestViewController2 {
     get {
       List<Test__c> escaped = records.deepClone(true, true, true);
       escape(escaped);
-      for (Test__c r : escaped) {
-        escape(r.TestChild__r);
-      }
+      // for (Test__c r : escaped) {
+      //   escape(r.TestChild__r);
+      // }
       return escaped;
     }
     set;
@@ -22,6 +22,7 @@ public with sharing class CL_TestViewController2 {
     name = '無';
     childName = '無';
     records = [ SELECT Id,Name,(SELECT Id,Name FROM TestChild__r) FROM Test__c LIMIT 1000 ];
+    System.debug(records);
   }
 
   public void doRegister() {
@@ -42,6 +43,10 @@ public with sharing class CL_TestViewController2 {
     records = [ SELECT Id,Name,(SELECT Id,Name FROM TestChild__r) FROM Test__c LIMIT 1000 ];
     this.name = name;
     this.childName = childName;
+
+    for (Test__c t : records) {
+      doDebug(t.Id);
+    }
   }
 
   public void escape(List<SObject> lst) {
@@ -54,7 +59,17 @@ public with sharing class CL_TestViewController2 {
             obj.put(dfr.name , ((String)obj.get(dfr.name)).escapeHtml4());
           }
         }
+        for (Schema.ChildRelationship cr : obj.getSObjectType().getDescribe().childrelationships) {
+          if (!String.isBlank(cr.getRelationshipName())) {
+            escape(obj.getSObjects(cr.getRelationshipName()));
+          }
+        }
       }
     }
+  }
+
+  @future(callout = true)
+  public static void doDebug(Id id) {
+    System.debug([ SELECT Id,Name,(SELECT Id,Name FROM TestChild__r) FROM Test__c WHERE Id = :id ]);
   }
 }

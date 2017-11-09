@@ -39,6 +39,7 @@ public with sharing class CL_TestViewController {
     records = [ SELECT Id,Name,RefTest__r.Name FROM TestChild__c LIMIT 1000 ];
     this.name = name;
     this.childName = childName;
+    doDebug(JSON.serialize(records));
   }
 
   public void escape(List<SObject> lst) {
@@ -67,6 +68,14 @@ public with sharing class CL_TestViewController {
           }
         }
       }
+    }
+  }
+
+  @future(callout = true)
+  public static void doDebug(String json) {
+    List<TestChild__c> lst = (List<TestChild__c>)System.JSON.deserialize(json, List<TestChild__c>.class);
+    for (TestChild__c c : lst) {
+      System.debug(c);
     }
   }
 }
