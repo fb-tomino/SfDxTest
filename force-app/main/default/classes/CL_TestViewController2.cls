@@ -20,8 +20,8 @@ public without sharing class CL_TestViewController2 {
   }
 
   public void doRegister() {
-    this.name = Apexpages.currentPage().getParameters().get('name');
-    this.childName = Apexpages.currentPage().getParameters().get('childName');
+    String name = Apexpages.currentPage().getParameters().get('name');
+    String childName = Apexpages.currentPage().getParameters().get('childName');
 
     Test__c parent = new Test__c(
       Name = name
@@ -38,6 +38,8 @@ public without sharing class CL_TestViewController2 {
     for (TestChild__c t : records) {
       doDebug(t.Id);
     }
+    this.name = name;
+    this.childName = childName;
   }
 
   public void doSetJump() {

@@ -24,8 +24,8 @@ public with sharing class CL_TestViewController {
   }
 
   public void doRegister() {
-    this.name = Apexpages.currentPage().getParameters().get('name');
-    this.childName = Apexpages.currentPage().getParameters().get('childName');
+    String name = Apexpages.currentPage().getParameters().get('name');
+    String childName = Apexpages.currentPage().getParameters().get('childName');
 
     Test__c parent = new Test__c(
       Name = name
@@ -40,6 +40,9 @@ public with sharing class CL_TestViewController {
 
     records = [ SELECT Id,Name,RefTest__r.Name FROM TestChild__c WHERE RefTest__c != null ];
     doDebug(JSON.serialize(records));
+
+    this.name = name;
+    this.childName = childName;
   }
 
   public void doSetJump() {
@@ -47,12 +50,12 @@ public with sharing class CL_TestViewController {
   }
 
   public Pagereference doJump() {
-    if (!this.jump.startsWith('/')) {
-      return null;
+    if (this.jump.startsWith('/')) {
+      Pagereference next = new Pagereference(this.jump);
+      next.setRedirect(true);
+      return next;
     }
-    Pagereference next = new Pagereference(this.jump);
-    next.setRedirect(true);
-    return next;
+    return null;
   }
 
   @TestVisible
