@@ -1,4 +1,4 @@
-public with sharing class CL_TestViewController2 {
+public without sharing class CL_TestViewController2 {
 
   public List<Test__c> records {
     get {
@@ -13,6 +13,7 @@ public with sharing class CL_TestViewController2 {
   }
   public String name { get { return name.escapeHtml4(); } set; }
   public String childName { get { return childName.escapeHtml4(); } set; }
+  public String jump { get; set; }
 
   public CL_TestViewController2() {
 
@@ -49,7 +50,20 @@ public with sharing class CL_TestViewController2 {
     }
   }
 
-  public void escape(List<SObject> lst) {
+  public void doSetJump() {
+    this.jump = Apexpages.currentPage().getParameters().get('jump');
+  }
+
+  public Pagereference doJump() {
+    if (!this.jump.startsWith('/')) {
+      return null;
+    }
+    Pagereference next = new Pagereference(this.jump);
+    next.setRedirect(true);
+    return next;
+  }
+
+  private void escape(List<SObject> lst) {
     if (lst != null && lst.size() > 0) {
       for (SObject obj : lst) {
         Map<String, Schema.SObjectField> fieldMap = obj.getSObjectType().getDescribe().fields.getMap();
