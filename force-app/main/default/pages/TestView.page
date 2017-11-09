@@ -34,28 +34,26 @@
 
   </apex:outputPanel>
   <br/>
-  <apex:form id="register">
-    <apex:actionRegion>
-      テスト名：<input type="text" id="name" value=""/><br/>
-      テスト子名：<input type="text" id="childName" value=""/><br/>
-      <input type="button" value="登録" onclick="doRegisterFunc();"/>
-      <apex:actionFunction name="doRegister" action="{!doRegister}" reRender="panel">
-        <apex:param name="name" value=""/>
-        <apex:param name="childName" value=""/>
-      </apex:actionFunction>
-    </apex:actionRegion>
-  </apex:form>
-
-  <apex:form id="jumper">
-    <apex:actionRegion>
-      ジャンプ先：<input type="text" id="jump" value=""/><br/>
-      <input type="button" value="登録" onclick="doSetJumpFunc();"/>
-      <apex:actionFunction name="doSetJump" action="{!doSetJump}" reRender="panel">
-        <apex:param name="jump" value=""/>
-      </apex:actionFunction>
-    </apex:actionRegion>
-    <apex:commandButton action="{!doJump}" value="jump" />
-  </apex:form>
+  <apex:form>
+      <apex:actionRegion>
+        テスト名：<input type="text" id="name" value=""/><br/>
+        テスト子名：<input type="text" id="childName" value=""/><br/>
+        <input type="button" value="登録" onclick="doRegisterFunc();"/>
+        <apex:actionFunction name="doRegister" action="{!doRegister}" reRender="panel">
+          <apex:param name="name" value=""/>
+          <apex:param name="childName" value=""/>
+        </apex:actionFunction>
+      </apex:actionRegion>
+      <br/>
+      <apex:actionRegion>
+        ジャンプ先：<input type="text" id="jump" value=""/><br/>
+        <input type="button" value="登録" onclick="doSetJumpFunc();"/>
+        <apex:actionFunction name="doSetJump" action="{!doSetJump}" reRender="panel">
+          <apex:param name="jump" value=""/>
+        </apex:actionFunction>
+      </apex:actionRegion>
+      <apex:commandButton action="{!doJump}" value="jump" />
+    </apex:form>
 
   <script>
     function doRegisterFunc() {

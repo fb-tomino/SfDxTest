@@ -17,14 +17,15 @@ public with sharing class CL_TestViewController {
   }
 
   public void init() {
+    this.jump = Apexpages.currentPage().getParameters().get('q');
     name = '無';
     childName = '無';
-    records = [ SELECT Id,Name,RefTest__r.Name FROM TestChild__c LIMIT 1000 ];
+    records = [ SELECT Id,Name,RefTest__r.Name FROM TestChild__c WHERE RefTest__c != null ];
   }
 
   public void doRegister() {
-    String name = Apexpages.currentPage().getParameters().get('name');
-    String childName = Apexpages.currentPage().getParameters().get('childName');
+    this.name = Apexpages.currentPage().getParameters().get('name');
+    this.childName = Apexpages.currentPage().getParameters().get('childName');
 
     Test__c parent = new Test__c(
       Name = name
@@ -37,9 +38,7 @@ public with sharing class CL_TestViewController {
     );
     insert children;
 
-    records = [ SELECT Id,Name,RefTest__r.Name FROM TestChild__c LIMIT 1000 ];
-    this.name = name;
-    this.childName = childName;
+    records = [ SELECT Id,Name,RefTest__r.Name FROM TestChild__c WHERE RefTest__c != null ];
     doDebug(JSON.serialize(records));
   }
 
@@ -48,6 +47,9 @@ public with sharing class CL_TestViewController {
   }
 
   public Pagereference doJump() {
+    if (!this.jump.startsWith('/')) {
+      return null;
+    }
     Pagereference next = new Pagereference(this.jump);
     next.setRedirect(true);
     return next;
