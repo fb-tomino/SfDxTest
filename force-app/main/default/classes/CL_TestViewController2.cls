@@ -1,18 +1,11 @@
 public without sharing class CL_TestViewController2 {
 
-  public List<Test__c> records {
-    get {
-      List<Test__c> escaped = records.deepClone(true, true, true);
-      escape(escaped);
-      // for (Test__c r : escaped) {
-      //   escape(r.TestChild__r);
-      // }
-      return escaped;
-    }
+  public List<TestChild__c> records {
+    get;
     set;
   }
-  public String name { get { return name.escapeHtml4(); } set; }
-  public String childName { get { return childName.escapeHtml4(); } set; }
+  public String name { get; set; }
+  public String childName { get; set; }
   public String jump { get; set; }
 
   public CL_TestViewController2() {
@@ -20,15 +13,15 @@ public without sharing class CL_TestViewController2 {
   }
 
   public void init() {
+    this.jump = Apexpages.currentPage().getParameters().get('q');
     name = '無';
     childName = '無';
-    records = [ SELECT Id,Name,(SELECT Id,Name FROM TestChild__r) FROM Test__c LIMIT 1000 ];
-    System.debug(records);
+    records = [ SELECT Id,Name,RefTest__r.Name FROM TestChild__c WHERE RefTest__c != null ];
   }
 
   public void doRegister() {
-    String name = Apexpages.currentPage().getParameters().get('name');
-    String childName = Apexpages.currentPage().getParameters().get('childName');
+    this.name = Apexpages.currentPage().getParameters().get('name');
+    this.childName = Apexpages.currentPage().getParameters().get('childName');
 
     Test__c parent = new Test__c(
       Name = name
@@ -41,11 +34,8 @@ public without sharing class CL_TestViewController2 {
     );
     insert children;
 
-    records = [ SELECT Id,Name,(SELECT Id,Name FROM TestChild__r) FROM Test__c LIMIT 1000 ];
-    this.name = name;
-    this.childName = childName;
-
-    for (Test__c t : records) {
+    records = [ SELECT Id,Name,RefTest__r.Name FROM TestChild__c WHERE RefTest__c != null ];
+    for (TestChild__c t : records) {
       doDebug(t.Id);
     }
   }
@@ -55,9 +45,6 @@ public without sharing class CL_TestViewController2 {
   }
 
   public Pagereference doJump() {
-    if (!this.jump.startsWith('/')) {
-      return null;
-    }
     Pagereference next = new Pagereference(this.jump);
     next.setRedirect(true);
     return next;
@@ -66,16 +53,26 @@ public without sharing class CL_TestViewController2 {
   private void escape(List<SObject> lst) {
     if (lst != null && lst.size() > 0) {
       for (SObject obj : lst) {
-        Map<String, Schema.SObjectField> fieldMap = obj.getSObjectType().getDescribe().fields.getMap();
-        for (Schema.SObjectField f : fieldMap.values()) {
-          Schema.DescribeFieldResult dfr = f.getDescribe();
-          if (dfr.soaptype == Schema.SoapType.String) {
-            obj.put(dfr.name , ((String)obj.get(dfr.name)).escapeHtml4());
-          }
-        }
-        for (Schema.ChildRelationship cr : obj.getSObjectType().getDescribe().childrelationships) {
-          if (!String.isBlank(cr.getRelationshipName())) {
-            escape(obj.getSObjects(cr.getRelationshipName()));
+        escapeSObject(obj);
+      }
+    }
+  }
+
+  private void escapeSObject(SObject obj) {
+    Map<String, Schema.SObjectField> fieldMap = obj.getSObjectType().getDescribe().fields.getMap();
+    for (Schema.SObjectField f : fieldMap.values()) {
+      Schema.DescribeFieldResult dfr = f.getDescribe();
+      if (dfr.soaptype == Schema.SoapType.String) {
+        obj.put(dfr.name , ((String)obj.get(dfr.name)).escapeHtml4());
+      } else if (dfr.soaptype == Schema.SoapType.ID) {
+        for (Schema.SObjectType t : dfr.getReferenceTo()) {
+          if (dfr.getRelationshipName().contains('__r')) {
+            SObject ro = obj.getSObject(dfr.getRelationshipName());
+            System.debug(dfr.getRelationshipName());
+            if (ro != null) {
+              escapeSObject(ro);
+              obj.putSObject(dfr.getRelationshipName(), ro);
+            }
           }
         }
       }
@@ -84,6 +81,6 @@ public without sharing class CL_TestViewController2 {
 
   @future(callout = true)
   public static void doDebug(Id id) {
-    System.debug([ SELECT Id,Name,(SELECT Id,Name FROM TestChild__r) FROM Test__c WHERE Id = :id ]);
+    System.debug([ SELECT Id,Name,RefTest__r.Name FROM TestChild__c WHERE Id = :id ]);
   }
 }
