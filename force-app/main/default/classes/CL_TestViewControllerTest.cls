@@ -13,10 +13,19 @@ public with sharing class CL_TestViewControllerTest {
     Pagereference page = new PageReference('/apex/TestView');
     page.getParameters().put('name', 'parent');
     page.getParameters().put('childName', 'child');
+    page.getParameters().put('jump', '/apex/TestView');
     Test.setCurrentPage(page);
 
     tgt.init();
     tgt.doRegister();
+    tgt.doSetJump();
+    tgt.doJump();
+
+    tgt.jump = 'http://example.com';
+    tgt.doJump();
+
+    List<TestChild__c> lst = new List<TestChild__c>{c};
+    CL_TestViewController.doDebug(JSON.serialize(lst));
 
     System.assert(true, tgt.records);
     // System.assert(false, '強制失敗');
