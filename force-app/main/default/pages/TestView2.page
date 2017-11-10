@@ -29,9 +29,6 @@
     テスト名：<apex:outputText value="{!name}" escape="false"/><br/>
     テスト子名：<apex:outputText value="{!childName}" escape="false"/><br/>
 
-    <br/>
-    ジャンプ先：<apex:outputText value="{!jump}"/><br/>
-
   </apex:outputPanel>
   <br/>
   <apex:form id="register">
@@ -50,7 +47,9 @@
       <apex:actionRegion>
         ジャンプ先：<input type="text" id="jump" value=""/><br/>
         <input type="button" value="登録" onclick="doSetJumpFunc();"/>
-        <apex:actionFunction name="doSetJump" action="{!doSetJump}" reRender="panel">
+        <br/>
+        ジャンプ先：<apex:outputText id="tojump" value="{!jump}"/><br/>
+            <apex:actionFunction name="doSetJump" action="{!doSetJump}" reRender="tojump">
           <apex:param name="jump" value=""/>
         </apex:actionFunction>
       </apex:actionRegion>
