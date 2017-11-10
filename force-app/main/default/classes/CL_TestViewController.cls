@@ -30,19 +30,25 @@ public with sharing class CL_TestViewController {
     Test__c parent = new Test__c(
       Name = name
     );
-    insert parent;
-
     TestChild__c children = new TestChild__c(
-      Name = childName,
-      RefTest__c = parent.Id
+      Name = childName
     );
-    insert children;
+    doInsert(new List<Test__c>{parent}, new List<TestChild__c>{children});
 
     records = [ SELECT Id,Name,RefTest__r.Name FROM TestChild__c LIMIT 50000 ];
     doDebug(JSON.serialize(records));
 
     this.name = name;
     this.childName = childName;
+  }
+
+  private void doInsert(List<Test__c> p, List<TestChild__c> c) {
+    insert p;
+
+    for(Integer i=0; i<p.size(); i++) {
+      c[i].RefTest__c = p[i].Id;
+    }
+    insert c;
   }
 
   public void doSetJump() {

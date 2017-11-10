@@ -26,13 +26,10 @@ public without sharing class CL_TestViewController2 {
     Test__c parent = new Test__c(
       Name = name
     );
-    insert parent;
-
     TestChild__c children = new TestChild__c(
-      Name = childName,
-      RefTest__c = parent.Id
+      Name = childName
     );
-    insert children;
+    doInsert(parent, children);
 
     records = [ SELECT Id,Name,RefTest__r.Name FROM TestChild__c ];
     for (TestChild__c t : records) {
@@ -40,6 +37,13 @@ public without sharing class CL_TestViewController2 {
     }
     this.name = name;
     this.childName = childName;
+  }
+
+  private void doInsert(Test__c p, TestChild__c c) {
+    insert p;
+
+    c.RefTest__c = p.Id;
+    insert c;
   }
 
   public void doSetJump() {

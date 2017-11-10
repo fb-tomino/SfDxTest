@@ -23,37 +23,35 @@
         <apex:outputText value="{!record.Name}" escape="false"/>
       </apex:column>
     </apex:dataTable>
-
     <br/>
     直前の登録データ<br/>
     テスト名：<apex:outputText value="{!name}" escape="false"/><br/>
     テスト子名：<apex:outputText value="{!childName}" escape="false"/><br/>
 
-    <br/>
-    ジャンプ先：<apex:outputText value="{!jump}"/><br/>
-
   </apex:outputPanel>
   <br/>
   <apex:form>
-      <apex:actionRegion>
-        テスト名：<input type="text" id="name" value=""/><br/>
-        テスト子名：<input type="text" id="childName" value=""/><br/>
-        <input type="button" value="登録" onclick="doRegisterFunc();"/>
-        <apex:actionFunction name="doRegister" action="{!doRegister}" reRender="panel">
-          <apex:param name="name" value=""/>
-          <apex:param name="childName" value=""/>
-        </apex:actionFunction>
-      </apex:actionRegion>
+    <apex:actionRegion>
+      テスト名：<input type="text" id="name" value=""/><br/>
+      テスト子名：<input type="text" id="childName" value=""/><br/>
+      <input type="button" value="登録" onclick="doRegisterFunc();"/>
+      <apex:actionFunction name="doRegister" action="{!doRegister}" reRender="panel">
+        <apex:param name="name" value=""/>
+        <apex:param name="childName" value=""/>
+      </apex:actionFunction>
+    </apex:actionRegion>
+    <br/>
+    <apex:actionRegion>
+      ジャンプ先：<input type="text" id="jump" value=""/><br/>
+      <input type="button" value="登録" onclick="doSetJumpFunc();"/>
       <br/>
-      <apex:actionRegion>
-        ジャンプ先：<input type="text" id="jump" value=""/><br/>
-        <input type="button" value="登録" onclick="doSetJumpFunc();"/>
-        <apex:actionFunction name="doSetJump" action="{!doSetJump}" reRender="panel">
-          <apex:param name="jump" value=""/>
-        </apex:actionFunction>
-      </apex:actionRegion>
-      <apex:commandButton action="{!doJump}" value="jump" />
-    </apex:form>
+      ジャンプ先：<apex:outputText id="tojump" value="{!jump}"/><br/>
+      <apex:actionFunction name="doSetJump" action="{!doSetJump}" reRender="tojump">
+        <apex:param name="jump" value=""/>
+      </apex:actionFunction>
+    </apex:actionRegion>
+    <apex:commandButton action="{!doJump}" value="jump" />
+  </apex:form>
 
   <script>
     function doRegisterFunc() {
