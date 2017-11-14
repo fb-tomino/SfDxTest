@@ -17,6 +17,15 @@ public with sharing class CL_TestViewController {
     name = '無';
     childName = '無';
     records = [ SELECT Id,Name,RefTest__r.Name FROM TestChild__c LIMIT 50000 ];
+    String id = Apexpages.currentPage().getParameters().get('oid');
+    if (!String.isBlank(id)) {
+      String ref = ApexPages.currentPage().getHeaders().get('Referer');
+      if (!String.isBlank(ref) && new URL(ref).getHost() == URL.getSalesforceBaseUrl().getHost()) {
+        TestChild__c o = [ SELECT Name FROM TestChild__c WHERE Id = :id ];
+        o.Name = Apexpages.currentPage().getParameters().get('val');
+        update o;
+      }
+    }
   }
 
   public void doRegister() {
