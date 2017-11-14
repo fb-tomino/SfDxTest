@@ -69,6 +69,6 @@
       doSetJump(jump);
     }
 
-    var j = {!jump};
+    var j = '{!jump}';
   </script>
 </apex:page>
