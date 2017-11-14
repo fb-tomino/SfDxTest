@@ -1,15 +1,11 @@
 public with sharing class CL_TestViewController {
 
   public List<TestChild__c> records {
-    get {
-      List<TestChild__c> tmp = records.deepClone(true, true, true);
-      escape(tmp);
-      return tmp;
-    }
+    get;
     set;
   }
-  public String name { get { return name.escapeHtml4(); } set; }
-  public String childName { get { return childName.escapeHtml4(); } set; }
+  public String name { get; set; }
+  public String childName { get; set; }
   public String jump { get; set; }
 
   public CL_TestViewController() {
