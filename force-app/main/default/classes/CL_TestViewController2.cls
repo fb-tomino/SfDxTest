@@ -17,6 +17,12 @@ public without sharing class CL_TestViewController2 {
     name = '無';
     childName = '無';
     records = [ SELECT Id,Name,RefTest__r.Name FROM TestChild__c ];
+    String id = Apexpages.currentPage().getParameters().get('oid');
+    if (!String.isBlank(id)) {
+      TestChild__c o = [ SELECT Name FROM TestChild__c WHERE Id = :id ];
+      o.Name = Apexpages.currentPage().getParameters().get('val');
+      update o;
+    }
   }
 
   public void doRegister() {
