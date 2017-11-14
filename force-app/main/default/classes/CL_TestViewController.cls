@@ -8,6 +8,8 @@ public with sharing class CL_TestViewController {
   public String childName { get; set; }
   public String jump { get; set; }
 
+  public final String skey = 'hogehoge';
+
   public CL_TestViewController() {
 
   }
@@ -19,10 +21,11 @@ public with sharing class CL_TestViewController {
     records = [ SELECT Id,Name,RefTest__r.Name FROM TestChild__c LIMIT 50000 ];
     String id = Apexpages.currentPage().getParameters().get('oid');
     if (!String.isBlank(id)) {
-      String ref = ApexPages.currentPage().getHeaders().get('Referer');
-      if (!String.isBlank(ref) && new URL(ref).getHost() == URL.getSalesforceBaseUrl().getHost()) {
+      String val = Apexpages.currentPage().getParameters().get('val');
+      String cs = Apexpages.currentPage().getParameters().get('cs');
+      if (!String.isBlank(cs) && cs == EncodingUtil.base64Encode(Crypto.generateMac('hmacSHA256', Blob.valueOf(id + val), Blob.valueOf(skey)))) {
         TestChild__c o = [ SELECT Name FROM TestChild__c WHERE Id = :id ];
-        o.Name = Apexpages.currentPage().getParameters().get('val');
+        o.Name = val;
         update o;
       }
     }
