@@ -68,5 +68,7 @@
       const jump = document.getElementById('jump').value;
       doSetJump(jump);
     }
+
+    var j = {!jump};
   </script>
 </apex:page>
