@@ -30,8 +30,8 @@
 
   </apex:outputPanel>
   <br/>
-  <apex:form>
-    <apex:actionRegion>
+  <apex:form >
+    <apex:actionRegion >
       テスト名：<input type="text" id="name" value=""/><br/>
       テスト子名：<input type="text" id="childName" value=""/><br/>
       <input type="button" value="登録" onclick="doRegisterFunc();"/>
@@ -41,7 +41,7 @@
       </apex:actionFunction>
     </apex:actionRegion>
     <br/>
-    <apex:actionRegion>
+    <apex:actionRegion >
       ジャンプ先：<input type="text" id="jump" value=""/><br/>
       <input type="button" value="登録" onclick="doSetJumpFunc();"/>
       <br/>
