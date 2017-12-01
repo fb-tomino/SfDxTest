@@ -4,9 +4,9 @@ jobs:
     docker:
       - image: dancinllama/dockerdx
 
-    branches:
-      only:
-        - master
+    # branches:
+    #   only:
+    #     - master
 
     environment:
       - SFDX_AUTOUPDATE_DISABLE: true
@@ -78,9 +78,9 @@ jobs:
     docker:
       - image: dancinllama/dockerdx
 
-    branches:
-      only:
-        - develop
+    # branches:
+    #   only:
+    #     - develop
 
     environment:
       - SFDX_AUTOUPDATE_DISABLE: true
@@ -89,3 +89,19 @@ jobs:
       - run
         name: Test
         Command: echo hogehogehoge
+
+workflows:
+  version: 2
+  build-master:
+    jobs:
+      - build-master
+          filters:
+            branches:
+              only: master
+
+  build-develop:
+    jobs:
+      - build-develop
+          filters:
+            branches:
+              only: develop
