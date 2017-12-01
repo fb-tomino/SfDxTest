@@ -15,17 +15,13 @@ jobs:
 
   master:
     docker:
-      - image: ncino/ci-sfdx
+      - image: jstvz/sfdx-ci
 
     environment:
       - SFDX_AUTOUPDATE_DISABLE: true
 
     steps:
       - checkout
-
-      - run:
-          name: Env Check
-          command: echo $SFDX_AUTOUPDATE_DISABLE
 
       - run:
           name: Connect Sandbox
