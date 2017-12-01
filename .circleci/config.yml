@@ -1,6 +1,6 @@
 version: 2
 jobs:
-  build:
+  build-master:
     docker:
       - image: dancinllama/dockerdx
 
@@ -73,3 +73,19 @@ jobs:
             else
               echo 'Deploy OK'
             fi
+
+  build-develop:
+    docker:
+      - image: dancinllama/dockerdx
+
+    branches:
+      only:
+        - develop
+
+    environment:
+      - SFDX_AUTOUPDATE_DISABLE: true
+
+    steps:
+      - run
+        name: Test
+        Command: echo hogehogehoge
