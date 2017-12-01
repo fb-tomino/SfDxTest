@@ -1,6 +1,6 @@
 version: 2
 jobs:
-  build_master:
+  buildmaster:
     docker:
       - image: dancinllama/dockerdx
 
@@ -74,7 +74,7 @@ jobs:
               echo 'Deploy OK'
             fi
 
-  build_develop:
+  builddevelop:
     docker:
       - image: dancinllama/dockerdx
 
@@ -92,18 +92,19 @@ jobs:
           name: Test
           Command: echo hogehogehoge
 
+
 workflows:
   version: 2
   build_master:
     jobs:
-      - build_master
+      - buildmaster
           filters:
             branches:
               only: master
 
   build_develop:
     jobs:
-      - build_develop
+      - builddevelop
           filters:
             branches:
               only: develop
