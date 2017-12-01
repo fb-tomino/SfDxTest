@@ -11,7 +11,7 @@ jobs:
     steps:
       - run:
           name: Test
-          Command: echo hogehogehoge
+          Command: sfdx force:auth:jwt:grant -h
 
   master:
     docker:
