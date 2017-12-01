@@ -25,7 +25,7 @@ jobs:
 
       - run:
           name: Connect Sandbox
-          command: sfdx force:auth:jwt:grant -i 3MVG910YPh8zrcR1yVy5MQ5lXneNWkYGo6gIN96ct1XJdxqCqbZb9YuGFXFTY5BMFAG4iIVcU1l.ZXuh_W4y8 -f .deploy/server.key -u maintenance@linkoff.bousai.ccideploy -s -a Sandbox -r https://test.salesforce.com --loglevel trace
+          command: sfdx force:auth:jwt:grant -i 3MVG910YPh8zrcR1yVy5MQ5lXneNWkYGo6gIN96ct1XJdxqCqbZb9YuGFXFTY5BMFAG4iIVcU1l.ZXuh_W4y8 -f .deploy/server.key -u maintenance@linkoff.bousai.ccideploy -s -a Sandbox --instanceUrl https://test.salesforce.com --loglevel trace
 
       - run:
           name: Change to metadataAPI
