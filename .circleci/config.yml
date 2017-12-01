@@ -15,7 +15,7 @@ jobs:
 
   master:
     docker:
-      - image: dancinllama/dockerdx
+      - image: ncino/ci-sfdx
 
     environment:
       - SFDX_AUTOUPDATE_DISABLE: true
