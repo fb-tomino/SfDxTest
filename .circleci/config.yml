@@ -46,7 +46,7 @@ jobs:
 
             while [ -z "${crs}" ]
             do
-              sfdx force:mdapi:deploy -u Sandbox -i ${jid} -w 1 | tee out.log
+              sfdx force:mdapi:deploy:report -u Sandbox -i ${jid} -w 1 | tee out.log
               crs=`grep finished out.log`
             done
             crs=`grep Status: out.log | tail -1 | tr -d ' ' | cut -d ':' -f 2`
@@ -72,7 +72,7 @@ jobs:
 
             while [ -z "${crs}" ]
             do
-              sfdx force:mdapi:deploy -u Sandbox -i ${jid} -w 1 | tee out.log
+              sfdx force:mdapi:deploy:report -u Sandbox -i ${jid} -w 1 | tee out.log
               crs=`grep finished out.log`
             done
             crs=`grep Status: out.log | tail -1 | tr -d ' ' | cut -d ':' -f 2`
