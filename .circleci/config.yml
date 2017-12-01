@@ -1,6 +1,6 @@
 version: 2
 jobs:
-  "build-master":
+  build:
     docker:
       - image: dancinllama/dockerdx
 
@@ -75,7 +75,7 @@ jobs:
             fi
 
 
-  "build-develop":
+  build:
     docker:
       - image: dancinllama/dockerdx
 
