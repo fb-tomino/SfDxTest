@@ -2,6 +2,16 @@ version: 2
 
 jobs:
   build:
+    docker:
+      - image: dancinllama/dockerdx
+
+    environment:
+      - SFDX_AUTOUPDATE_DISABLE: true
+
+    steps:
+      - run
+          name: Test
+          Command: echo hogehogehoge
 
   master:
     docker:
@@ -73,24 +83,10 @@ jobs:
               echo 'Deploy OK'
             fi
 
-  develop:
-    docker:
-      - image: dancinllama/dockerdx
-
-    environment:
-      - SFDX_AUTOUPDATE_DISABLE: true
-
-    steps:
-      - run
-          name: Test
-          Command: echo hogehogehoge
-
 workflows:
   version: 2
   build_master:
     jobs:
-      - build:
-
       - master:
           filters:
             branches:
@@ -99,8 +95,6 @@ workflows:
   build_develop:
     jobs:
       - build:
-
-      - develop:
           filters:
             branches:
               only: develop
