@@ -86,9 +86,11 @@ jobs:
       - SFDX_AUTOUPDATE_DISABLE: true
 
     steps:
-      - run
-        name: Test
-        Command: echo hogehogehoge
+      - checkout
+
+      - run:
+          name: Test
+          Command: echo hogehogehoge
 
 workflows:
   version: 2
