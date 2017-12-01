@@ -9,7 +9,7 @@ jobs:
       - SFDX_AUTOUPDATE_DISABLE: true
 
     steps:
-      - run
+      - run:
           name: Test
           Command: echo hogehogehoge
 
