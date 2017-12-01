@@ -1,22 +1,8 @@
 version: 2
 
-workflows:
-  version: 2
-  build_master:
-    jobs:
-      - master:
-          filters:
-            branches:
-              only: master
-
-  build_develop:
-    jobs:
-      - develop:
-          filters:
-            branches:
-              only: develop
-
 jobs:
+  build:
+
   master:
     docker:
       - image: dancinllama/dockerdx
@@ -98,3 +84,19 @@ jobs:
       - run
           name: Test
           Command: echo hogehogehoge
+
+workflows:
+  version: 2
+  build_master:
+    jobs:
+      - master:
+          filters:
+            branches:
+              only: master
+
+  build_develop:
+    jobs:
+      - develop:
+          filters:
+            branches:
+              only: develop
