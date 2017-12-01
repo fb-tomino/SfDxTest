@@ -1,7 +1,7 @@
 version: 2
 
 jobs:
-  build:
+  develop:
     docker:
       - image: dancinllama/dockerdx
 
@@ -94,7 +94,7 @@ workflows:
 
   build_develop:
     jobs:
-      - build:
+      - develop:
           filters:
             branches:
               only: develop
