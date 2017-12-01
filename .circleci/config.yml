@@ -2,16 +2,19 @@ version: 2
 
 workflows:
   version: 2
-  jobs:
-    - master:
-        filters:
-          branches:
-            only: master
+  build_master:
+    jobs:
+      - master:
+          filters:
+            branches:
+              only: master
 
-    - develop:
-        filters:
-          branches:
-            only: develop
+  build_develop:
+    jobs:
+      - develop:
+          filters:
+            branches:
+              only: develop
 
 jobs:
   master:
