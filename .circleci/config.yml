@@ -1,6 +1,6 @@
 version: 2
 jobs:
-  build-master:
+  "build-master":
     docker:
       - image: dancinllama/dockerdx
 
@@ -74,7 +74,7 @@ jobs:
               echo 'Deploy OK'
             fi
 
-  build-develop:
+  "build-develop":
     docker:
       - image: dancinllama/dockerdx
 
